@@ -26,7 +26,7 @@ export function RadioCard({
   return (
     <div
       className={cn(
-        "flex cursor-pointer gap-4 rounded-md border p-4 transition-all",
+        "flex items-center cursor-pointer gap-4 rounded-md border p-4 transition-all",
         selected
           ? "border-blue-500 bg-blue-50 shadow-sm"
           : "border-gray-200 bg-white hover:border-gray-300",
@@ -36,7 +36,7 @@ export function RadioCard({
       {...props}
     >
       {icon && (
-        <div className="flex h-6 w-6 items-center justify-center text-gray-500">
+        <div className="flex  items-center justify-center text-gray-500 bg-[#F9FBFF] p-3 rounded-lg">
           {icon}
         </div>
       )}
