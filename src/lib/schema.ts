@@ -47,35 +47,81 @@ export const realtorSchema = z.object({
   additionalDocuments: z.custom<File>().optional(),
   agreementWithLandlord: z
     .custom<File>()
-    .refine((file) => file !== undefined, "Agreement with landlord is required"),
+    .refine(
+      (file) => file !== undefined,
+      "Agreement with landlord is required"
+    ),
 });
 
 /**
  * Management company specific schema
  */
 export const managementCompanySchema = z.object({
-  companyName: z.string().min(1, "Company name is required"),
-  companyIdentifier: z.string().min(1, "Company identifier is required"),
-  jobTitle: z.string().min(1, "Job title is required"),
+  companyName: z
+    .string({
+      required_error: "Company name is required",
+    })
+    .min(1, "Company name is required"),
+  companyIdentifier: z
+    .string({
+      required_error: "Company identifier is required",
+    })
+    .min(1, "Company identifier is required"),
+  jobTitle: z
+    .string({
+      required_error: "Job title is required",
+    })
+    .min(1, "Job title is required"),
   agreement: z
     .custom<File>()
-    .refine((file) => file !== undefined, "Agreement with landlord/owner is required"),
-  country: z.string().min(1, "Country is required"),
-  streetAddress: z.string().min(1, "Street address is required"),
+    .refine(
+      (file) => file !== undefined,
+      "Agreement with landlord/owner is required"
+    ),
+  country: z
+    .string({
+      required_error: "Country is required",
+    })
+    .min(1, "Country is required"),
+  streetAddress: z
+    .string({
+      required_error: "Street address is required",
+    })
+    .min(1, "Street address is required"),
   aptUnit: z.string().optional(),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Invalid email address"),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  zipCode: z.string().min(1, "Zip code is required"),
+  phoneNumber: z
+    .string({
+      required_error: "Phone number is required",
+    })
+    .min(1, "Phone number is required"),
+  email: z
+    .string({
+      required_error: "Contact email is required",
+    })
+    .email("Invalid email address"),
+  city: z
+    .string({
+      required_error: "City is required",
+    })
+    .min(1, "City is required"),
+  state: z
+    .string({
+      required_error: "State is required",
+    })
+    .min(1, "State is required"),
+  zipCode: z
+    .string({
+      required_error: "Zip code is required",
+    })
+    .min(1, "Zip code is required"),
 });
 
 /**
  * Terms and conditions schema
  */
 export const termsSchema = z.object({
-  termsAccepted: z.boolean().refine(val => val === true, {
-    message: "You must accept the terms and conditions"
+  termsAccepted: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
   }),
 });
 

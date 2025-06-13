@@ -87,60 +87,65 @@ export function PropertyForm() {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit, handleError)}
-        className="mx-auto w-full max-w-6xl space-y-8 p-4"
+        className="space-y-6 "
       >
         {/* RentYard Logo */}
-        <div className="flex items-center justify-between border-b pb-4">
-          <div className="flex items-center space-x-2 text-blue-500">
-            <Image
-              src="/images/rentyard.png"
-              alt="RentYard Logo"
-              width={148}
-              height={38}
-            />
+        <div className="border-b border-gray-100 pb-4">
+          <div className="mx-auto w-full max-w-[1440px] flex items-center justify-between px-20">
+            <div className="flex items-center space-x-2 text-blue-500">
+              <Image
+                src="/images/rentyard.png"
+                alt="RentYard Logo"
+                width={148}
+                height={38}
+              />
+            </div>
+            <Button variant="outline" type="button">
+              Save & Exit
+            </Button>
           </div>
-          <Button variant="outline" type="button">
-            Save & Exit
-          </Button>
         </div>
+        <div className="mx-auto w-full max-w-[1440px] space-y-6 px-20">
+          {/* Property Type Selection */}
+          <PropertyTypeSelection />
 
-        {/* Property Type Selection */}
-        <PropertyTypeSelection />
+          {/* Role Selection */}
+          <RoleSelection />
 
-        {/* Role Selection */}
-        <RoleSelection />
+          {/* Conditional Rendering based on selected role */}
+          {selectedRole === Role.LANDLORD && <LandlordForm />}
+          {selectedRole === Role.REALTOR && <RealtorForm />}
+          {selectedRole === Role.MANAGEMENT_COMPANY && (
+            <ManagementCompanyForm />
+          )}
 
-        {/* Conditional Rendering based on selected role */}
-        {selectedRole === Role.LANDLORD && <LandlordForm />}
-        {selectedRole === Role.REALTOR && <RealtorForm />}
-        {selectedRole === Role.MANAGEMENT_COMPANY && <ManagementCompanyForm />}
+          {/* Terms & Conditions */}
+          <div className="flex items-start space-x-2">
+            <input
+              type="checkbox"
+              id="terms"
+              className="mt-1 h-4 w-4"
+              {...methods.register("termsAccepted")}
+            />
+            <label htmlFor="terms" className="text-sm">
+              Accept RentYard property adding terms & condition
+            </label>
+          </div>
+          {methods.formState.errors.termsAccepted && (
+            <p className="mt-1 text-sm text-red-500">
+              {methods.formState.errors.termsAccepted.message as string}
+            </p>
+          )}
 
-        {/* Terms & Conditions */}
-        <div className="flex items-start space-x-2">
-          <input
-            type="checkbox"
-            id="terms"
-            className="mt-1 h-4 w-4"
-            {...methods.register("termsAccepted")}
-          />
-          <label htmlFor="terms" className="text-sm">
-            Accept RentYard property adding terms & condition
-          </label>
-        </div>
-        {methods.formState.errors.termsAccepted && (
-          <p className="mt-1 text-sm text-red-500">
-            {methods.formState.errors.termsAccepted.message as string}
-          </p>
-        )}
-
-        {/* Action Buttons */}
-        <div className="flex justify-between">
-          <Button variant="outline" type="button">
-            Back
-          </Button>
-          <Button type="submit" variant="primary" disabled={isSubmitting}>
-            Next
-          </Button>
+          {/* Action Buttons */}
+          <div className="flex justify-between">
+            <Button variant="outline" type="button">
+              Back
+            </Button>
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
+              Next
+            </Button>
+          </div>
         </div>
       </form>
     </FormProvider>

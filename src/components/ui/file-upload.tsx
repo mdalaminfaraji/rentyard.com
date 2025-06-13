@@ -52,7 +52,7 @@ export function FileUpload({
     <div className={cn("space-y-2", className)}>
       <div
         className={cn(
-          "flex h-12 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white px-4 py-2 transition-all max-w-[400px]",
+          "flex h-10 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white px-4 py-2 transition-all max-w-[400px]",
           error
             ? "border-red-500 ring-1 ring-red-100"
             : "border-gray-200 hover:border-gray-300"
