@@ -85,20 +85,12 @@ export function PropertyForm() {
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(onSubmit, handleError)}
-        className="space-y-6 "
-      >
+      <form onSubmit={handleSubmit(onSubmit, handleError)} className="space-y-6 ">
         {/* RentYard Logo */}
         <div className="border-b border-gray-100 pb-4">
           <div className="mx-auto w-full max-w-[1440px] flex items-center justify-between px-20">
             <div className="flex items-center space-x-2 text-blue-500">
-              <Image
-                src="/images/rentyard.png"
-                alt="RentYard Logo"
-                width={148}
-                height={38}
-              />
+              <Image src="/images/rentyard.png" alt="RentYard Logo" width={148} height={38} />
             </div>
             <Button variant="outline" type="button">
               Save & Exit
@@ -115,9 +107,7 @@ export function PropertyForm() {
           {/* Conditional Rendering based on selected role */}
           {selectedRole === Role.LANDLORD && <LandlordForm />}
           {selectedRole === Role.REALTOR && <RealtorForm />}
-          {selectedRole === Role.MANAGEMENT_COMPANY && (
-            <ManagementCompanyForm />
-          )}
+          {selectedRole === Role.MANAGEMENT_COMPANY && <ManagementCompanyForm />}
 
           {/* Terms & Conditions */}
           <div className="flex items-start space-x-2">

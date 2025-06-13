@@ -47,10 +47,7 @@ export const realtorSchema = z.object({
   additionalDocuments: z.custom<File>().optional(),
   agreementWithLandlord: z
     .custom<File>()
-    .refine(
-      (file) => file !== undefined,
-      "Agreement with landlord is required"
-    ),
+    .refine((file) => file !== undefined, "Agreement with landlord is required"),
 });
 
 /**
@@ -74,10 +71,7 @@ export const managementCompanySchema = z.object({
     .min(1, "Job title is required"),
   agreement: z
     .custom<File>()
-    .refine(
-      (file) => file !== undefined,
-      "Agreement with landlord/owner is required"
-    ),
+    .refine((file) => file !== undefined, "Agreement with landlord/owner is required"),
   country: z
     .string({
       required_error: "Country is required",

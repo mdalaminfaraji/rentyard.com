@@ -23,9 +23,7 @@ export function ManagementCompanyForm() {
 
   return (
     <div className="mt-6 rounded-md border border-gray-200 bg-gray-50 p-4">
-      <h2 className="mb-4 text-sm font-medium text-gray-700">
-        Company & office info
-      </h2>
+      <h2 className="mb-4 text-sm font-medium text-gray-700">Company & office info</h2>
       <div className="grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-2 lg:grid-cols-4">
         <Controller
           name="companyName"
@@ -73,9 +71,7 @@ export function ManagementCompanyForm() {
         />
 
         <div className="space-y-1">
-          <label className="text-sm text-gray-700">
-            Agreement with landlord/owner*
-          </label>
+          <label className="text-sm text-gray-700">Agreement with landlord/owner*</label>
           <Controller
             name="agreement"
             control={control}
@@ -173,9 +169,7 @@ export function ManagementCompanyForm() {
             )}
           />
           {errors.phoneNumber && (
-            <p className="text-xs text-red-500">
-              {errors.phoneNumber.message as string}
-            </p>
+            <p className="text-xs text-red-500">{errors.phoneNumber.message as string}</p>
           )}
         </div>
 

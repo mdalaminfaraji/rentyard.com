@@ -16,25 +16,22 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
     return (
       <div className={cn("w-full space-y-1", containerClassName)}>
         {label && (
-          <label 
-            htmlFor={props.id} 
-            className="text-sm text-gray-700"
-          >
+          <label htmlFor={props.id} className="text-sm text-gray-700">
             {label}
           </label>
         )}
-        <Input 
+        <Input
           ref={ref}
           className={cn(
             `w-full rounded-md bg-white p-2.5 text-sm outline-none`,
-            error ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500" : "border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
+            error
+              ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+              : "border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
             className
           )}
           {...props}
         />
-        {error && helperText && (
-          <p className="text-xs text-red-500">{helperText}</p>
-        )}
+        {error && helperText && <p className="text-xs text-red-500">{helperText}</p>}
       </div>
     );
   }

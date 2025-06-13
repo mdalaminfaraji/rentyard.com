@@ -6,10 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Upload02Icon } from "@hugeicons/core-free-icons";
 
 interface FileUploadProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "type" | "value" | "onChange"
-  > {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "onChange"> {
   onFileChange: (file: File | null) => void;
   value?: File | null;
   label: string;
@@ -53,22 +50,13 @@ export function FileUpload({
       <div
         className={cn(
           "flex h-10 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white px-4 py-2 transition-all max-w-[400px]",
-          error
-            ? "border-red-500 ring-1 ring-red-100"
-            : "border-gray-200 hover:border-gray-300"
+          error ? "border-red-500 ring-1 ring-red-100" : "border-gray-200 hover:border-gray-300"
         )}
         onClick={handleClick}
       >
-        <HugeiconsIcon
-          icon={Upload02Icon}
-          size={20}
-          color="gray"
-          className="mr-2"
-        />
+        <HugeiconsIcon icon={Upload02Icon} size={20} color="gray" className="mr-2" />
         {/* <Download className="mr-2 h-5 w-5 text-gray-500" /> */}
-        <span className="text-sm text-[#6F6C6A]">
-          {fileName || "(pdf only)" || label}
-        </span>
+        <span className="text-sm text-[#6F6C6A]">{fileName || "(pdf only)" || label}</span>
         <input
           ref={inputRef}
           type="file"
@@ -78,9 +66,7 @@ export function FileUpload({
           {...props}
         />
       </div>
-      {error && errorMessage && (
-        <p className="text-xs text-red-500">{errorMessage}</p>
-      )}
+      {error && errorMessage && <p className="text-xs text-red-500">{errorMessage}</p>}
     </div>
   );
 }

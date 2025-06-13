@@ -17,18 +17,20 @@ export interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectEl
 }
 
 const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>(
-  ({ className, options = [], error, label, helperText, containerClassName, children, ...props }, ref) => {
+  (
+    { className, options = [], error, label, helperText, containerClassName, children, ...props },
+    ref
+  ) => {
     return (
       <div className={cn("w-full space-y-1", containerClassName)}>
         {label && (
-          <label 
-            htmlFor={props.id} 
-            className="text-sm text-gray-700"
-          >
+          <label htmlFor={props.id} className="text-sm text-gray-700">
             {label}
           </label>
         )}
-        <div className={`relative w-full rounded-md border ${error ? "border-red-500" : "border-gray-200"}`}>
+        <div
+          className={`relative w-full rounded-md border ${error ? "border-red-500" : "border-gray-200"}`}
+        >
           <select
             ref={ref}
             className={cn(
@@ -37,15 +39,13 @@ const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>(
             )}
             {...props}
           >
-            {options.length > 0 ? (
-              options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))
-            ) : (
-              children
-            )}
+            {options.length > 0
+              ? options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))
+              : children}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
@@ -53,9 +53,7 @@ const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>(
             </svg>
           </div>
         </div>
-        {error && helperText && (
-          <p className="text-xs text-red-500">{helperText}</p>
-        )}
+        {error && helperText && <p className="text-xs text-red-500">{helperText}</p>}
       </div>
     );
   }

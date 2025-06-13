@@ -17,9 +17,7 @@ export function RealtorForm() {
 
   return (
     <div className="mt-6 rounded-md border border-gray-200 bg-gray-50 p-4">
-      <h2 className="mb-4 text-sm font-medium text-gray-700">
-        Realtor verification
-      </h2>
+      <h2 className="mb-4 text-sm font-medium text-gray-700">Realtor verification</h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <div className="space-y-1">
@@ -35,16 +33,12 @@ export function RealtorForm() {
             {...register("licenceNumber")}
           />
           {errors.licenceNumber && (
-            <p className="text-xs text-red-500">
-              {errors.licenceNumber.message as string}
-            </p>
+            <p className="text-xs text-red-500">{errors.licenceNumber.message as string}</p>
           )}
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm text-gray-700">
-            Additional documents for realtor
-          </label>
+          <label className="text-sm text-gray-700">Additional documents for realtor</label>
           <Controller
             name="additionalDocuments"
             control={control}
@@ -61,9 +55,7 @@ export function RealtorForm() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm text-gray-700">
-            Agreement with landlord*
-          </label>
+          <label className="text-sm text-gray-700">Agreement with landlord*</label>
           <Controller
             name="agreementWithLandlord"
             control={control}

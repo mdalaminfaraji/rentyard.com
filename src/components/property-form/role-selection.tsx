@@ -4,11 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { RadioCard } from "../ui/radio-card";
 import { Role } from "@/lib/schema";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Key01Icon,
-  ManagerIcon,
-  PermanentJobIcon,
-} from "@hugeicons/core-free-icons";
+import { Key01Icon, ManagerIcon, PermanentJobIcon } from "@hugeicons/core-free-icons";
 
 /**
  * RoleSelection component
@@ -66,9 +62,7 @@ export function RoleSelection() {
           )}
         />
         {errors.role && (
-          <p className="col-span-full text-sm text-red-500">
-            {errors.role.message as string}
-          </p>
+          <p className="col-span-full text-sm text-red-500">{errors.role.message as string}</p>
         )}
       </div>
     </div>

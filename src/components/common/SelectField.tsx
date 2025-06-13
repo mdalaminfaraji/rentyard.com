@@ -67,9 +67,7 @@ const SelectField: React.FC<FormSelectProps> = ({
         </SelectContent>
       </Select>
 
-      {error && helperText && (
-        <p className="text-xs text-red-500">{helperText}</p>
-      )}
+      {error && helperText && <p className="text-xs text-red-500">{helperText}</p>}
     </div>
   );
 };

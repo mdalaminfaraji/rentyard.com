@@ -3,8 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-export interface InputFieldProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   label?: string;
   helperText?: string;
@@ -12,10 +11,7 @@ export interface InputFieldProps
 }
 
 const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
-  (
-    { className, error, label, helperText, containerClassName, ...props },
-    ref
-  ) => {
+  ({ className, error, label, helperText, containerClassName, ...props }, ref) => {
     return (
       <div className={cn("w-full space-y-1", containerClassName)}>
         {label && (
@@ -34,9 +30,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           )}
           {...props}
         />
-        {error && helperText && (
-          <p className="text-xs text-red-500">{helperText}</p>
-        )}
+        {error && helperText && <p className="text-xs text-red-500">{helperText}</p>}
       </div>
     );
   }

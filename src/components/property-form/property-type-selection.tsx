@@ -4,11 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { RadioCard } from "../ui/radio-card";
 import { PropertyType } from "@/lib/schema";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Building03Icon,
-  Building04Icon,
-  Home03Icon,
-} from "@hugeicons/core-free-icons";
+import { Building03Icon, Building04Icon, Home03Icon } from "@hugeicons/core-free-icons";
 
 /**
  * PropertyTypeSelection component
