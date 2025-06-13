@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-// import { Download } from "lucide-react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Upload02Icon } from "@hugeicons/core-free-icons";
 
@@ -22,7 +21,7 @@ interface FileUploadProps
  */
 export function FileUpload({
   onFileChange,
-  value,
+  value, // Used to display filename if available
   label,
   error = false,
   errorMessage,
@@ -31,7 +30,7 @@ export function FileUpload({
   ...props
 }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string>("");
+  const [fileName, setFileName] = useState<string>(value?.name || "");
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -55,7 +54,6 @@ export function FileUpload({
         onClick={handleClick}
       >
         <HugeiconsIcon icon={Upload02Icon} size={20} color="gray" className="mr-2" />
-        {/* <Download className="mr-2 h-5 w-5 text-gray-500" /> */}
         <span className="text-sm text-[#6F6C6A]">{fileName || "(pdf only)" || label}</span>
         <input
           ref={inputRef}

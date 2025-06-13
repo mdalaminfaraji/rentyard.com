@@ -9,12 +9,6 @@ import { cn } from "@/lib/utils";
 import { SelectField } from "../common/SelectField";
 import { InputField } from "../common/InputField";
 
-/**
- * ManagementCompanyForm component
- * Renders the company & office information form for property management companies
- * Includes company details, contact info, and document upload
- * Handles validation and error display
- */
 export function ManagementCompanyForm() {
   const {
     control,

@@ -3,11 +3,6 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FileUpload } from "../ui/file-upload";
 
-/**
- * RealtorForm component
- * Renders the realtor verification section with license number and document uploads
- * Handles validation and error display
- */
 export function RealtorForm() {
   const {
     control,

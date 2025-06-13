@@ -3,11 +3,6 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FileUpload } from "../ui/file-upload";
 
-/**
- * LandlordForm component
- * Renders the ownership document upload section for landlords
- * Handles file upload validation and error display
- */
 export function LandlordForm() {
   const {
     control,

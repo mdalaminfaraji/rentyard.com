@@ -11,14 +11,7 @@ import { Button } from "../ui/button";
 import { Role, formSchema } from "@/lib/schema";
 import Image from "next/image";
 
-/**
- * PropertyForm component
- * Main form component that integrates all form sections and handles form submission
- * Conditionally renders role-specific forms based on selection
- */
 export function PropertyForm() {
-  // Form state is handled by react-hook-form
-
   // Initialize form with react-hook-form and zod validation
   const methods = useForm({
     resolver: zodResolver(formSchema),
@@ -86,7 +79,6 @@ export function PropertyForm() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit, handleError)} className="space-y-6 ">
-        {/* RentYard Logo */}
         <div className="border-b border-gray-100 pb-4">
           <div className="mx-auto w-full max-w-[1440px] flex items-center justify-between px-20">
             <div className="flex items-center space-x-2 text-blue-500">
@@ -98,18 +90,13 @@ export function PropertyForm() {
           </div>
         </div>
         <div className="mx-auto w-full max-w-[1440px] space-y-6 px-20">
-          {/* Property Type Selection */}
           <PropertyTypeSelection />
-
-          {/* Role Selection */}
           <RoleSelection />
 
-          {/* Conditional Rendering based on selected role */}
           {selectedRole === Role.LANDLORD && <LandlordForm />}
           {selectedRole === Role.REALTOR && <RealtorForm />}
           {selectedRole === Role.MANAGEMENT_COMPANY && <ManagementCompanyForm />}
 
-          {/* Terms & Conditions */}
           <div className="flex items-start space-x-2">
             <input
               type="checkbox"
@@ -127,7 +114,6 @@ export function PropertyForm() {
             </p>
           )}
 
-          {/* Action Buttons */}
           <div className="flex justify-between">
             <Button variant="outline" type="button">
               Back
