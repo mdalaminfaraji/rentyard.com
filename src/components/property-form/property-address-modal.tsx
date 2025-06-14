@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Modal } from "../ui/modal";
 import { propertyAddressSchema } from "@/lib/schema";
+import { InputField } from "../common/InputField";
+import { SelectField } from "../common/SelectField";
 
 interface PropertyAddressModalProps {
   isOpen: boolean;
@@ -20,9 +23,9 @@ export function PropertyAddressModal({
   initialData,
 }: PropertyAddressModalProps) {
   const {
-    register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(propertyAddressSchema),
@@ -47,17 +50,19 @@ export function PropertyAddressModal({
   // Reset form when modal closes
   React.useEffect(() => {
     if (!isOpen) {
-      reset(initialData || {
-        propertyName: "",
-        totalUnits: "",
-        propertyWebsite: "",
-        country: "",
-        streetAddress: "",
-        aptSuiteUnit: "",
-        city: "",
-        state: "",
-        zipCode: "",
-      });
+      reset(
+        initialData || {
+          propertyName: "",
+          totalUnits: "",
+          propertyWebsite: "",
+          country: "",
+          streetAddress: "",
+          aptSuiteUnit: "",
+          city: "",
+          state: "",
+          zipCode: "",
+        }
+      );
     }
   }, [isOpen, initialData, reset]);
 
@@ -68,164 +73,161 @@ export function PropertyAddressModal({
       title="Property address"
       footer={
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit(onSubmit)}
-            type="button"
-          >
+          <Button variant="primary" onClick={handleSubmit(onSubmit)} type="button">
             Add
           </Button>
         </div>
       }
     >
       <form className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Property name as identifier*
-            </label>
-            <input
-              {...register("propertyName")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Dallas apartments complex"
-            />
-            {errors.propertyName && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.propertyName.message as string}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Total apartment unit*
-            </label>
-            <input
-              {...register("totalUnits")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="50"
-            />
-            {errors.totalUnits && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.totalUnits.message as string}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Property website (optional)
-          </label>
-          <input
-            {...register("propertyWebsite")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            placeholder="https://"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Country/Region*
-            </label>
-            <select
-              {...register("country")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            >
-              <option value="">Choose country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="UK">United Kingdom</option>
-              {/* Add more countries as needed */}
-            </select>
-            {errors.country && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.country.message as string}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Street address*
-            </label>
-            <input
-              {...register("streetAddress")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="111 Austin Ave"
-            />
-            {errors.streetAddress && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.streetAddress.message as string}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Apt, suite, unit (if applicable)
-          </label>
-          <input
-            {...register("aptSuiteUnit")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            placeholder="123"
-          />
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">City/Town*</label>
-            <input
-              {...register("city")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Dallas"
-            />
-            {errors.city && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.city.message as string}
-              </p>
+          <Controller
+            name="propertyName"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="propertyName"
+                label="Property name as identifier*"
+                placeholder="Dallas apartments complex"
+                error={!!errors.propertyName}
+                helperText={errors.propertyName?.message as string}
+                {...field}
+              />
             )}
-          </div>
+          />
 
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              State/Territory*
-            </label>
-            <select
-              {...register("state")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            >
-              <option value="">Choose state</option>
-              <option value="TX">Texas</option>
-              <option value="CA">California</option>
-              <option value="NY">New York</option>
-              {/* Add more states as needed */}
-            </select>
-            {errors.state && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.state.message as string}
-              </p>
+          <Controller
+            name="totalUnits"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="totalUnits"
+                label="Total apartment unit*"
+                placeholder="50"
+                error={!!errors.totalUnits}
+                helperText={errors.totalUnits?.message as string}
+                {...field}
+              />
             )}
-          </div>
+          />
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Zip code*</label>
-            <input
-              {...register("zipCode")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="75061"
-            />
-            {errors.zipCode && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.zipCode.message as string}
-              </p>
+          <Controller
+            name="propertyWebsite"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="propertyWebsite"
+                label="Property website (optional)"
+                placeholder="https://"
+                error={!!errors.propertyWebsite}
+                helperText={errors.propertyWebsite?.message as string}
+                {...field}
+              />
             )}
-          </div>
+          />
+
+          <Controller
+            name="country"
+            control={control}
+            render={({ field }) => (
+              <SelectField
+                label="Country/Region*"
+                placeholder="Select country"
+                error={!!errors.country}
+                helperText={errors.country?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+                options={[
+                  { value: "US", label: "United States" },
+                  { value: "CA", label: "Canada" },
+                  { value: "UK", label: "United Kingdom" },
+                  { value: "AU", label: "Australia" },
+                  { value: "BD", label: "Bangladesh" },
+                ]}
+              />
+            )}
+          />
+
+          <Controller
+            name="streetAddress"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="streetAddress"
+                label="Street address*"
+                placeholder="111 Austin Ave"
+                error={!!errors.streetAddress}
+                helperText={errors.streetAddress?.message as string}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            name="aptSuiteUnit"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="aptSuiteUnit"
+                label="Apt, suite, unit (if applicable)"
+                placeholder="123"
+                error={!!errors.aptSuiteUnit}
+                helperText={errors.aptSuiteUnit?.message as string}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            name="city"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="city"
+                label="City/Town*"
+                placeholder="Dallas"
+                error={!!errors.city}
+                helperText={errors.city?.message as string}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            name="state"
+            control={control}
+            render={({ field }) => (
+              <SelectField
+                label="State/Territory*"
+                placeholder="Select state"
+                error={!!errors.state}
+                helperText={errors.state?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+                options={[
+                  { value: "TX", label: "Texas" },
+                  { value: "CA", label: "California" },
+                  { value: "NY", label: "New York" },
+                  // Add more states as needed
+                ]}
+              />
+            )}
+          />
+
+          <Controller
+            name="zipCode"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                id="zipCode"
+                label="Zip code*"
+                placeholder="75061"
+                error={!!errors.zipCode}
+                helperText={errors.zipCode?.message as string}
+                {...field}
+              />
+            )}
+          />
         </div>
       </form>
     </Modal>

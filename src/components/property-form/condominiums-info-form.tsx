@@ -95,16 +95,11 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  <p>
-                    {condominiumsInfo.propertyAddress.propertyName}, Total unit:{" "}
-                    {condominiumsInfo.propertyAddress.totalUnits}
-                  </p>
-                  <p>
-                    {condominiumsInfo.propertyAddress.streetAddress},{" "}
-                    {condominiumsInfo.propertyAddress.city},{" "}
-                    {condominiumsInfo.propertyAddress.state}{" "}
-                    {condominiumsInfo.propertyAddress.zipCode}, USA
-                  </p>
+                  {condominiumsInfo.propertyAddress.propertyName}, Total unit:{" "}
+                  {condominiumsInfo.propertyAddress.totalUnits}
+                  {condominiumsInfo.propertyAddress.streetAddress},{" "}
+                  {condominiumsInfo.propertyAddress.city}, {condominiumsInfo.propertyAddress.state}{" "}
+                  {condominiumsInfo.propertyAddress.zipCode}, USA
                 </div>
               }
               onEdit={() => openModal("propertyAddress")}
@@ -140,9 +135,9 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  <p>Leasing manager: {condominiumsInfo.leasingInfo.leasingManager}</p>
-                  <p>Email: {condominiumsInfo.leasingInfo.email}</p>
-                  <p>Phone: {condominiumsInfo.leasingInfo.phoneNumber}</p>
+                  {condominiumsInfo.leasingInfo.leasingManager}
+                  {condominiumsInfo.leasingInfo.email}
+                  {condominiumsInfo.leasingInfo.phoneNumber}
                 </div>
               }
               onEdit={() => openModal("leasingInfo")}
@@ -176,8 +171,8 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  <p>Application fee: {condominiumsInfo.charges.applicationFee}</p>
-                  <p>Admin fee: {condominiumsInfo.charges.adminFee}</p>
+                  {condominiumsInfo.charges.applicationFee}
+                  {condominiumsInfo.charges.adminFee}
                 </div>
               }
               onEdit={() => openModal("charges")}
@@ -211,11 +206,9 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  <p>Rent payment frequency: {condominiumsInfo.rentFrequency.rentFrequency}</p>
-                  <p>
-                    Rent reminder date: {condominiumsInfo.rentFrequency.reminderDate} every month
-                  </p>
-                  <p>Rent due date: {condominiumsInfo.rentFrequency.dueDate} every month</p>
+                  {condominiumsInfo.rentFrequency.rentFrequency}
+                  {condominiumsInfo.rentFrequency.reminderDate}
+                  {condominiumsInfo.rentFrequency.dueDate}
                 </div>
               }
               onEdit={() => openModal("rentFrequency")}
@@ -437,12 +430,14 @@ export function CondominiumsInfoForm() {
             Property gallery <span className="text-gray-500">(Its not unit photo)*</span>
           </h3>
 
-          <div className="p-4">
+          <div className="p-4 flex gap-4">
             <div className="mb-4">
-              <p className="text-sm font-medium mb-3">Featured photos<span className="text-red-500">*</span></p>
-              <div className="flex flex-wrap gap-3">
+              <p className="text-sm font-medium mb-3">
+                Featured photos<span className="text-red-500">*</span>
+              </p>
+              <div className="flex gap-3">
                 {/* Main featured photo upload box */}
-                <div className="border border-dashed border-blue-300 rounded-md bg-blue-50/50 p-4 flex flex-col items-center justify-center w-[180px] h-[180px]">
+                <div className="border border-dashed border-blue-300 rounded-2xl bg-blue-50/50 p-4 flex flex-col items-center justify-center w-[180px]">
                   <div className="mb-2">
                     <Upload className="h-6 w-6 text-blue-500" />
                   </div>
@@ -451,22 +446,36 @@ export function CondominiumsInfoForm() {
                 </div>
 
                 {/* Additional featured photos */}
-                {Array(3).fill(0).map((_, index) => (
-                  <div key={`featured-${index}`} className="border border-dashed border-blue-300 rounded-md bg-blue-50/50 p-2 flex flex-col items-center justify-center w-[100px] h-[100px]">
-                    <Upload className="h-5 w-5 text-blue-500" />
-                  </div>
-                ))}
+                <div className="grid grid-cols-2 gap-3">
+                  {Array(4)
+                    .fill(0)
+                    .map((_, index) => (
+                      <div
+                        key={`featured-${index}`}
+                        className="border border-dashed border-blue-300 rounded-2xl bg-blue-50/50 p-2 flex flex-col items-center justify-center w-[100px] h-[100px]"
+                      >
+                        <Upload className="h-5 w-5 text-blue-500" />
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
 
             <div>
-              <p className="text-sm font-medium mb-3">More photos<span className="text-gray-500">(optional)</span></p>
-              <div className="flex flex-wrap gap-3">
-                {Array(8).fill(0).map((_, index) => (
-                  <div key={`more-${index}`} className="border border-dashed border-gray-300 rounded-md bg-gray-50/50 p-2 flex flex-col items-center justify-center w-[100px] h-[100px]">
-                    <Upload className="h-5 w-5 text-gray-400" />
-                  </div>
-                ))}
+              <p className="text-sm font-medium mb-3">
+                More photos<span className="text-gray-500">(optional)</span>
+              </p>
+              <div className="grid grid-cols-4 gap-3">
+                {Array(8)
+                  .fill(0)
+                  .map((_, index) => (
+                    <div
+                      key={`more-${index}`}
+                      className="border border-dashed border-blue-300 rounded-2xl bg-blue-50/50 p-2 flex flex-col items-center justify-center w-[100px] h-[100px]"
+                    >
+                      <Upload className="h-5 w-5 text-blue-500" />
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

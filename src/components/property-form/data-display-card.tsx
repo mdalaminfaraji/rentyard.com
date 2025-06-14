@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { PencilEdit02Icon } from "@hugeicons/core-free-icons";
 
 interface DataDisplayCardProps {
   title: string;
@@ -21,14 +23,12 @@ export function DataDisplayCard({
   recommended = false,
 }: DataDisplayCardProps) {
   return (
-    <div className="flex flex-col border border-gray-200 rounded-lg p-4 mb-4">
-      <div className="flex justify-between items-center mb-2">
+    <div className="flex flex-col border border-gray-200 rounded-lg py-4 mb-4">
+      <div className="flex justify-between items-center mb-2 px-4">
         <div className="flex items-center">
           <h3 className="text-sm font-medium">
             {title}
-            {required && (
-              <span className="text-red-500 ml-1">(Required)</span>
-            )}
+            {required && <span className="text-red-500 ml-1">(Required)</span>}
             {recommended && !required && (
               <span className="text-gray-500 ml-1">(Optional but recommended)</span>
             )}
@@ -36,13 +36,8 @@ export function DataDisplayCard({
         </div>
         <div className="flex space-x-2">
           {onEdit && (
-            <Button
-              onClick={onEdit}
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 text-blue-500"
-            >
-              <Pencil className="h-4 w-4" />
+            <Button onClick={onEdit} variant="ghost" className="h-10 w-16 p-0 text-blue-500">
+              <HugeiconsIcon icon={PencilEdit02Icon} size={28} /> Edit
             </Button>
           )}
           {onDelete && (
@@ -50,14 +45,14 @@ export function DataDisplayCard({
               onClick={onDelete}
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 text-red-500"
+              className="h-12 w-12 p-0 text-red-500"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-6 w-6" />
             </Button>
           )}
         </div>
       </div>
-      <div className="text-sm text-gray-700">{data}</div>
+      <div className="text-sm text-gray-700 border-t border-gray-200 pt-4 px-4">{data}</div>
     </div>
   );
 }
