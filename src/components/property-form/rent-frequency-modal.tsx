@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Modal } from "../ui/modal";
 import { rentFrequencySchema } from "@/lib/schema";
+import { SelectField } from "../common/SelectField";
+import { DatePickerField } from "../common/DatePickerField";
 
 interface RentFrequencyModalProps {
   isOpen: boolean;
@@ -20,7 +23,7 @@ export function RentFrequencyModal({
   initialData,
 }: RentFrequencyModalProps) {
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -40,11 +43,13 @@ export function RentFrequencyModal({
 
   React.useEffect(() => {
     if (!isOpen) {
-      reset(initialData || {
-        rentFrequency: "",
-        reminderDate: "",
-        dueDate: "",
-      });
+      reset(
+        initialData || {
+          rentFrequency: "",
+          reminderDate: "",
+          dueDate: "",
+        }
+      );
     }
   }, [isOpen, initialData, reset]);
 
@@ -55,84 +60,67 @@ export function RentFrequencyModal({
       title="Rent frequency & payment reminder"
       footer={
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit(onSubmit)}
-            type="button"
-          >
+          <Button variant="primary" onClick={handleSubmit(onSubmit)} type="button">
             Add
           </Button>
         </div>
       }
     >
-      <form className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Rent payment frequency*
-          </label>
-          <select
-            {...register("rentFrequency")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Select frequency</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Bi-Monthly">Bi-Monthly</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Quarterly">Quarterly</option>
-            <option value="Yearly">Yearly</option>
-          </select>
-          {errors.rentFrequency && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.rentFrequency.message as string}
-            </p>
-          )}
-        </div>
+      <form className="space-y-6">
+        <div className="grid grid-cols-3 gap-3">
+          <Controller
+            name="rentFrequency"
+            control={control}
+            render={({ field }) => (
+              <SelectField
+                label="Rent payment frequency*"
+                placeholder="Select frequency"
+                error={!!errors.rentFrequency}
+                helperText={errors.rentFrequency?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+                options={[
+                  { value: "Monthly", label: "Monthly" },
+                  { value: "Bi-Monthly", label: "Bi-Monthly" },
+                  { value: "Weekly", label: "Weekly" },
+                  { value: "Quarterly", label: "Quarterly" },
+                  { value: "Yearly", label: "Yearly" },
+                ]}
+              />
+            )}
+          />
 
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Rent reminder date*
-          </label>
-          <select
-            {...register("reminderDate")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Select date</option>
-            {Array.from({ length: 28 }, (_, i) => i + 1).map((day) => (
-              <option key={day} value={`${day}th`}>
-                {day}th every month
-              </option>
-            ))}
-          </select>
-          {errors.reminderDate && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.reminderDate.message as string}
-            </p>
-          )}
-        </div>
+          <Controller
+            name="reminderDate"
+            control={control}
+            render={({ field }) => (
+              <DatePickerField
+                id="reminderDate"
+                label="Rent Reminder/Statement date*"
+                placeholder="25th Every month"
+                error={!!errors.reminderDate}
+                helperText={errors.reminderDate?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
 
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Rent due date*
-          </label>
-          <select
-            {...register("dueDate")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Select date</option>
-            {Array.from({ length: 28 }, (_, i) => i + 1).map((day) => (
-              <option key={day} value={`${day}th`}>
-                {day}th every month
-              </option>
-            ))}
-          </select>
-          {errors.dueDate && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.dueDate.message as string}
-            </p>
-          )}
+          <Controller
+            name="dueDate"
+            control={control}
+            render={({ field }) => (
+              <DatePickerField
+                id="dueDate"
+                label="Rent due date*"
+                placeholder="5th Every month"
+                error={!!errors.dueDate}
+                helperText={errors.dueDate?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
         </div>
       </form>
     </Modal>

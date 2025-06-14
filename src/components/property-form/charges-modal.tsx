@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Modal } from "../ui/modal";
 import { chargesSchema } from "@/lib/schema";
+import { InputField } from "../common/InputField";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { InformationCircleIcon } from "@hugeicons/core-free-icons";
 
 interface ChargesModalProps {
   isOpen: boolean;
@@ -13,14 +17,9 @@ interface ChargesModalProps {
   initialData?: any;
 }
 
-export function ChargesModal({
-  isOpen,
-  onClose,
-  onSave,
-  initialData,
-}: ChargesModalProps) {
+export function ChargesModal({ isOpen, onClose, onSave, initialData }: ChargesModalProps) {
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -37,12 +36,14 @@ export function ChargesModal({
     onClose();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) {
-      reset(initialData || {
-        applicationFee: "",
-        adminFee: "",
-      });
+      reset(
+        initialData || {
+          applicationFee: "",
+          adminFee: "",
+        }
+      );
     }
   }, [isOpen, initialData, reset]);
 
@@ -52,52 +53,46 @@ export function ChargesModal({
       onClose={onClose}
       title="Charges"
       footer={
-        <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit(onSubmit)}
-            type="button"
-          >
+        <div className="flex justify-between items-center space-x-2">
+          <div className="flex items-center space-x-2 text-base text-gray-500">
+            <HugeiconsIcon icon={InformationCircleIcon} size={24} />
+            <p>Type 0 if charges not applicable</p>
+          </div>
+          <Button variant="primary" onClick={handleSubmit(onSubmit)} type="button">
             Add
           </Button>
         </div>
       }
     >
-      <form className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Application fee ($100-$5+ applicant)*
-          </label>
-          <input
-            {...register("applicationFee")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            placeholder="$100"
-          />
-          {errors.applicationFee && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.applicationFee.message as string}
-            </p>
+      <form className="flex gap-4">
+        <Controller
+          name="applicationFee"
+          control={control}
+          render={({ field }) => (
+            <InputField
+              id="applicationFee"
+              label="Application fee ($100-$5+ applicant)*"
+              placeholder="$100"
+              error={!!errors.applicationFee}
+              helperText={errors.applicationFee?.message as string}
+              {...field}
+            />
           )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Admin fee ($)*
-          </label>
-          <input
-            {...register("adminFee")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            placeholder="$75"
-          />
-          {errors.adminFee && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.adminFee.message as string}
-            </p>
+        />
+        <Controller
+          name="adminFee"
+          control={control}
+          render={({ field }) => (
+            <InputField
+              id="adminFee"
+              label="Admin fee ($)*"
+              placeholder="$75"
+              error={!!errors.adminFee}
+              helperText={errors.adminFee?.message as string}
+              {...field}
+            />
           )}
-        </div>
+        />
       </form>
     </Modal>
   );

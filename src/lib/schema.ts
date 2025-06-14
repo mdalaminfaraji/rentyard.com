@@ -146,11 +146,87 @@ export const propertyAddressSchema = z.object({
 /**
  * Leasing info schema
  */
-export const leasingInfoSchema = z.object({
-  leasingManager: z.string().min(1, "Leasing manager name is required"),
-  email: z.string().email("Invalid email address"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-});
+export const leasingInfoSchema = z
+  .object({
+    leasingManager: z
+      .string({
+        required_error: "Leasing manager name is required",
+      })
+      .min(1, "Leasing manager name is required"),
+    email: z
+      .string({
+        required_error: "Email address is required",
+      })
+      .email("Invalid email address"),
+    phoneNumber: z
+      .string({
+        required_error: "Phone number is required",
+      })
+      .min(6, "Phone number must be at least 6 characters"),
+    sameAsProperty: z.boolean().optional().default(false),
+    // Address fields (conditionally required based on sameAsProperty)
+    streetAddress: z
+      .string()
+      .optional()
+      .refine((val) => val || val === "", {
+        message: "Street address is required",
+      }),
+    aptSuiteUnit: z.string().optional(),
+    city: z
+      .string()
+      .optional()
+      .refine((val) => val || val === "", {
+        message: "City is required",
+      }),
+    state: z
+      .string()
+      .optional()
+      .refine((val) => val || val === "", {
+        message: "State is required",
+      }),
+    zipCode: z
+      .string()
+      .optional()
+      .refine((val) => val || val === "", {
+        message: "Zip code is required",
+      }),
+  })
+  .superRefine((data, ctx) => {
+    // If sameAsProperty is false, validate that all required address fields are filled
+    if (data.sameAsProperty === false) {
+      if (!data.streetAddress) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Street address is required",
+          path: ["streetAddress"],
+        });
+      }
+
+      if (!data.city) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "City is required",
+          path: ["city"],
+        });
+      }
+
+      if (!data.state) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "State is required",
+          path: ["state"],
+        });
+      }
+
+      if (!data.zipCode) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Zip code is required",
+          path: ["zipCode"],
+        });
+      }
+    }
+  });
 
 /**
  * Charges schema
@@ -173,10 +249,11 @@ export const rentFrequencySchema = z.object({
  * Pet fees schema
  */
 export const petFeesSchema = z.object({
-  dogMaxWeight: z.string().optional(),
-  monthlyRent: z.string().optional(),
-  oneTimeFee: z.string().optional(),
-  securityDeposit: z.string().optional(),
+  petType: z.string().min(1, "Pet type is required"),
+  maxWeight: z.string().min(1, "Max weight is required"),
+  monthlyRent: z.string().min(1, "Monthly rent is required"),
+  oneTimeFee: z.string().min(1, "One time fee is required"),
+  securityDeposit: z.string().min(1, "Security deposit is required"),
 });
 
 /**

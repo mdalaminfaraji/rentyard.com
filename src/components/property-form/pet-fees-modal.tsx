@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Modal } from "../ui/modal";
 import { petFeesSchema } from "@/lib/schema";
+import { InputField } from "../common/InputField";
+import { SelectField } from "../common/SelectField";
 
 interface PetFeesModalProps {
   isOpen: boolean;
@@ -13,21 +16,17 @@ interface PetFeesModalProps {
   initialData?: any;
 }
 
-export function PetFeesModal({
-  isOpen,
-  onClose,
-  onSave,
-  initialData,
-}: PetFeesModalProps) {
+export function PetFeesModal({ isOpen, onClose, onSave, initialData }: PetFeesModalProps) {
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(petFeesSchema),
     defaultValues: initialData || {
-      dogMaxWeight: "",
+      petType: "",
+      maxWeight: "",
       monthlyRent: "",
       oneTimeFee: "",
       securityDeposit: "",
@@ -41,12 +40,15 @@ export function PetFeesModal({
 
   React.useEffect(() => {
     if (!isOpen) {
-      reset(initialData || {
-        dogMaxWeight: "",
-        monthlyRent: "",
-        oneTimeFee: "",
-        securityDeposit: "",
-      });
+      reset(
+        initialData || {
+          petType: "",
+          maxWeight: "",
+          monthlyRent: "",
+          oneTimeFee: "",
+          securityDeposit: "",
+        }
+      );
     }
   }, [isOpen, initialData, reset]);
 
@@ -57,14 +59,7 @@ export function PetFeesModal({
       title="Pet fees"
       footer={
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit(onSubmit)}
-            type="button"
-          >
+          <Button variant="primary" onClick={handleSubmit(onSubmit)} type="button">
             Add
           </Button>
         </div>
@@ -72,51 +67,85 @@ export function PetFeesModal({
     >
       <form className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Dog, Max weight
-            </label>
-            <input
-              {...register("dogMaxWeight")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="20lb"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Monthly per rent
-            </label>
-            <input
-              {...register("monthlyRent")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="$100"
-            />
-          </div>
+          <Controller
+            name="petType"
+            control={control}
+            render={({ field }) => (
+              <SelectField
+                label="Pet type*"
+                placeholder="Select pet type"
+                error={!!errors.petType}
+                helperText={errors.petType?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+                options={[
+                  { value: "Dog", label: "Dog" },
+                  { value: "Cat", label: "Cat" },
+                  { value: "Other", label: "Other" },
+                ]}
+              />
+            )}
+          />
+          <Controller
+            name="maxWeight"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                label="Max weight (LB)*"
+                placeholder="20lb"
+                error={!!errors.maxWeight}
+                helperText={errors.maxWeight?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Controller
+            name="monthlyRent"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                label="Monthly per rent*"
+                placeholder="$100"
+                error={!!errors.monthlyRent}
+                helperText={errors.monthlyRent?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              One time pet fee
-            </label>
-            <input
-              {...register("oneTimeFee")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="$100"
-            />
-          </div>
+          <Controller
+            name="oneTimeFee"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                label="One time pet fee*"
+                placeholder="$100"
+                error={!!errors.oneTimeFee}
+                helperText={errors.oneTimeFee?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
 
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Pet security deposit
-            </label>
-            <input
-              {...register("securityDeposit")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="$500"
-            />
-          </div>
+          <Controller
+            name="securityDeposit"
+            control={control}
+            render={({ field }) => (
+              <InputField
+                label="Pet security deposit*"
+                placeholder="$500"
+                error={!!errors.securityDeposit}
+                helperText={errors.securityDeposit?.message as string}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
         </div>
       </form>
     </Modal>

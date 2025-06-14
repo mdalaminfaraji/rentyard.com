@@ -2,13 +2,15 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
-import { Plus, Upload } from "lucide-react";
+import { Plus, Trash2, Upload } from "lucide-react";
 import { PropertyAddressModal } from "./property-address-modal";
 import { LeasingInfoModal } from "./leasing-info-modal";
 import { ChargesModal } from "./charges-modal";
 import { RentFrequencyModal } from "./rent-frequency-modal";
 import { PetFeesModal } from "./pet-fees-modal";
 import { DataDisplayCard } from "./data-display-card";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { CircleArrowDown01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 
 interface ModalState {
   propertyAddress: boolean;
@@ -135,9 +137,21 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  {condominiumsInfo.leasingInfo.leasingManager}
-                  {condominiumsInfo.leasingInfo.email}
-                  {condominiumsInfo.leasingInfo.phoneNumber}
+                  Leasing manager: {condominiumsInfo.leasingInfo.leasingManager},{" "}
+                  {condominiumsInfo.leasingInfo.email} , {condominiumsInfo.leasingInfo.phoneNumber}{" "}
+                  ,
+                  {condominiumsInfo.leasingInfo.sameAsProperty
+                    ? "Address(Same as property)"
+                    : "Address: " +
+                      condominiumsInfo.leasingInfo.streetAddress +
+                      " " +
+                      condominiumsInfo.leasingInfo.aptSuiteUnit +
+                      " " +
+                      condominiumsInfo.leasingInfo.city +
+                      " " +
+                      condominiumsInfo.leasingInfo.state +
+                      " " +
+                      condominiumsInfo.leasingInfo.zipCode}
                 </div>
               }
               onEdit={() => openModal("leasingInfo")}
@@ -171,7 +185,7 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  {condominiumsInfo.charges.applicationFee}
+                  Application fee: {condominiumsInfo.charges.applicationFee}, Admin fee:{" "}
                   {condominiumsInfo.charges.adminFee}
                 </div>
               }
@@ -206,8 +220,8 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  {condominiumsInfo.rentFrequency.rentFrequency}
-                  {condominiumsInfo.rentFrequency.reminderDate}
+                  Rent frequency: {condominiumsInfo.rentFrequency.rentFrequency} , Reminder date:{" "}
+                  {condominiumsInfo.rentFrequency.reminderDate} , Due date:{" "}
                   {condominiumsInfo.rentFrequency.dueDate}
                 </div>
               }
@@ -298,17 +312,57 @@ export function CondominiumsInfoForm() {
           {/* Pet Fees */}
           {condominiumsInfo.petFees ? (
             <DataDisplayCard
-              title="Pet fees"
+              addWithTitle={
+                <>
+                  <h3 className="text-sm font-medium">
+                    Pet fees{" "}
+                    <span className="text-gray-500">(Optional, add fees if you allow pet)</span>
+                  </h3>
+                  <div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="text-blue-500"
+                      onClick={() => openModal("petFees")}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                </>
+              }
               data={
-                <div>
-                  <p>Dog, Max weight: {condominiumsInfo.petFees.dogMaxWeight}</p>
-                  <p>Monthly per rent: {condominiumsInfo.petFees.monthlyRent}</p>
-                  <p>One time pet fee: {condominiumsInfo.petFees.oneTimeFee}</p>
-                  <p>Pet security deposit: {condominiumsInfo.petFees.securityDeposit}</p>
+                <div className="flex justify-between items-center">
+                  <div className="max-w-[70%]">
+                    Pet type: {condominiumsInfo.petFees.petType}, Max weight:{" "}
+                    {condominiumsInfo.petFees.maxWeight}, Monthly per rent:{" "}
+                    {condominiumsInfo.petFees.monthlyRent}, One time pet fee:{" "}
+                    {condominiumsInfo.petFees.oneTimeFee}, Pet security deposit:{" "}
+                    {condominiumsInfo.petFees.securityDeposit}
+                  </div>
+
+                  <div className="flex justify-end space-x-2">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-blue-500"
+                      onClick={() => openModal("petFees")}
+                    >
+                      <HugeiconsIcon icon={PencilEdit02Icon} size={28} />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-500"
+                      onClick={() => deleteData("petFees")}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                    </Button>
+                  </div>
                 </div>
               }
-              onEdit={() => openModal("petFees")}
-              onDelete={() => deleteData("petFees")}
             />
           ) : (
             <div className="border border-gray-200 rounded-2xl p-4 mb-4">
@@ -489,9 +543,8 @@ export function CondominiumsInfoForm() {
             <h3 className="text-sm font-medium">
               Videos <span className="text-gray-500">(optional)</span>
             </h3>
-            <Button type="button" variant="outline" size="sm" className="text-blue-500">
-              <Plus className="h-4 w-4 mr-1" /> Add
-            </Button>
+
+            <HugeiconsIcon icon={CircleArrowDown01Icon} size={28} className="text-[#272B35]" />
           </div>
         </div>
       </div>
