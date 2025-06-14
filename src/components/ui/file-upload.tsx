@@ -46,9 +46,10 @@ export function FileUpload({
 
   return (
     <div className={cn("space-y-2", className)}>
+      <label className="mb-1 block text-sm text-gray-700">{label}</label>
       <div
         className={cn(
-          "flex h-10 cursor-pointer items-center justify-center rounded-md border border-dashed bg-white px-4 py-2 transition-all max-w-[400px]",
+          "flex h-10 cursor-pointer items-center justify-center rounded-md border border-dashed bg-[#F4F4F4] px-4 py-2 transition-all max-w-[400px]",
           error ? "border-red-500 ring-1 ring-red-100" : "border-gray-200 hover:border-gray-300"
         )}
         onClick={handleClick}

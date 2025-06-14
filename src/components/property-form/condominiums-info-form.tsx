@@ -27,9 +27,15 @@ interface ModalState {
 }
 
 export function CondominiumsInfoForm() {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, formState: { errors } } = useFormContext();
 
   const condominiumsInfo = watch("condominiumsInfo") || {};
+  // Extract error messages for each required section
+  const condominiumsErrors = errors?.condominiumsInfo as Record<string, { message?: string }> | undefined;
+  const propertyAddressError = condominiumsErrors?.propertyAddress?.message as string | undefined;
+  const leasingInfoError = condominiumsErrors?.leasingInfo?.message as string | undefined;
+  const chargesError = condominiumsErrors?.charges?.message as string | undefined;
+  const rentFrequencyError = condominiumsErrors?.rentFrequency?.message as string | undefined;
 
   const [modalOpen, setModalOpen] = useState<ModalState>({
     propertyAddress: false,
@@ -98,7 +104,7 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("propertyAddress")}
             />
           ) : (
-            <div className="border border-gray-200 rounded-lg p-4 mb-4">
+            <div className={`border ${propertyAddressError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Property address <span className="text-red-500">(Required)</span>
@@ -113,6 +119,9 @@ export function CondominiumsInfoForm() {
                   <Plus className="h-4 w-4 mr-1" /> Add
                 </Button>
               </div>
+              {propertyAddressError && (
+                <p className="text-sm text-red-500 mt-2">{propertyAddressError}</p>
+              )}
             </div>
           )}
 
@@ -131,7 +140,7 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("leasingInfo")}
             />
           ) : (
-            <div className="border border-gray-200 rounded-lg p-4 mb-4">
+            <div className={`border ${leasingInfoError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Leasing info <span className="text-red-500">(Required)</span>
@@ -146,6 +155,9 @@ export function CondominiumsInfoForm() {
                   <Plus className="h-4 w-4 mr-1" /> Add
                 </Button>
               </div>
+              {leasingInfoError && (
+                <p className="text-sm text-red-500 mt-2">{leasingInfoError}</p>
+              )}
             </div>
           )}
 
@@ -163,7 +175,7 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("charges")}
             />
           ) : (
-            <div className="border border-gray-200 rounded-lg p-4 mb-4">
+            <div className={`border ${chargesError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Charges <span className="text-red-500">(Required)</span>
@@ -178,6 +190,9 @@ export function CondominiumsInfoForm() {
                   <Plus className="h-4 w-4 mr-1" /> Add
                 </Button>
               </div>
+              {chargesError && (
+                <p className="text-sm text-red-500 mt-2">{chargesError}</p>
+              )}
             </div>
           )}
 
@@ -198,7 +213,7 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("rentFrequency")}
             />
           ) : (
-            <div className="border border-gray-200 rounded-lg p-4 mb-4">
+            <div className={`border ${rentFrequencyError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Rent frequency & payment reminder <span className="text-red-500">(Required)</span>
@@ -213,6 +228,9 @@ export function CondominiumsInfoForm() {
                   <Plus className="h-4 w-4 mr-1" /> Add
                 </Button>
               </div>
+              {rentFrequencyError && (
+                <p className="text-sm text-red-500 mt-2">{rentFrequencyError}</p>
+              )}
             </div>
           )}
 

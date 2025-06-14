@@ -132,8 +132,7 @@ export function PropertyForm() {
         }
         
         if (hasErrors) {
-          // Don't proceed if there are validation errors
-          alert("Please fill in all required fields");
+          // Don't proceed if there are validation errors - errors are already set on form
           return;
         }
       }

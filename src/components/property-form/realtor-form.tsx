@@ -11,10 +11,12 @@ export function RealtorForm() {
   } = useFormContext();
 
   return (
-    <div className="mt-6 rounded-md border border-gray-200 bg-gray-50 p-4">
-      <h2 className="mb-4 text-sm font-medium text-gray-700">Realtor verification</h2>
+    <div className="mt-6 rounded-md border border-gray-200">
+      <h2 className="mb-4 text-sm font-medium text-gray-700 border-b border-[#E0E0E0] p-4 bg-[#F4F4F4]">
+        Realtor verification
+      </h2>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 p-4">
         <div className="space-y-1">
           <label className="text-sm text-gray-700" htmlFor="licenceNumber">
             Lenience number*
@@ -33,13 +35,12 @@ export function RealtorForm() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm text-gray-700">Additional documents for realtor</label>
           <Controller
             name="additionalDocuments"
             control={control}
             render={({ field }) => (
               <FileUpload
-                label="Upload additional documents"
+                label="Additional documents for realtor"
                 onFileChange={(file) => field.onChange(file)}
                 value={field.value}
                 error={!!errors.additionalDocuments}
@@ -50,13 +51,12 @@ export function RealtorForm() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm text-gray-700">Agreement with landlord*</label>
           <Controller
             name="agreementWithLandlord"
             control={control}
             render={({ field }) => (
               <FileUpload
-                label="Upload agreement document"
+                label="Agreement with landlord*"
                 onFileChange={(file) => field.onChange(file)}
                 value={field.value}
                 error={!!errors.agreementWithLandlord}

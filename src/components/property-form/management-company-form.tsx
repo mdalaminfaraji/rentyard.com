@@ -16,9 +16,11 @@ export function ManagementCompanyForm() {
   } = useFormContext();
 
   return (
-    <div className="mt-6 rounded-md border border-gray-200 bg-gray-50 p-4">
-      <h2 className="mb-4 text-sm font-medium text-gray-700">Company & office info</h2>
-      <div className="grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-2 lg:grid-cols-4">
+    <div className="mt-6 rounded-md border border-gray-200">
+      <h2 className="mb-4 text-sm font-medium text-gray-700 border-b border-[#E0E0E0] p-4 bg-[#F4F4F4]">
+        Company & office info
+      </h2>
+      <div className="grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-2 lg:grid-cols-4 p-4">
         <Controller
           name="companyName"
           control={control}
@@ -65,13 +67,12 @@ export function ManagementCompanyForm() {
         />
 
         <div className="space-y-1">
-          <label className="text-sm text-gray-700">Agreement with landlord/owner*</label>
           <Controller
             name="agreement"
             control={control}
             render={({ field }) => (
               <FileUpload
-                label="Upload agreement"
+                label="Agreement with landlord/owner*"
                 onFileChange={(file) => field.onChange(file)}
                 value={field.value}
                 error={!!errors.agreement}
