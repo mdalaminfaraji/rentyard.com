@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
+import { Plus, Upload } from "lucide-react";
 import { PropertyAddressModal } from "./property-address-modal";
 import { LeasingInfoModal } from "./leasing-info-modal";
 import { ChargesModal } from "./charges-modal";
 import { RentFrequencyModal } from "./rent-frequency-modal";
 import { PetFeesModal } from "./pet-fees-modal";
 import { DataDisplayCard } from "./data-display-card";
-import { Plus } from "lucide-react";
 
 interface ModalState {
   propertyAddress: boolean;
@@ -27,11 +27,17 @@ interface ModalState {
 }
 
 export function CondominiumsInfoForm() {
-  const { watch, setValue, formState: { errors } } = useFormContext();
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
 
   const condominiumsInfo = watch("condominiumsInfo") || {};
   // Extract error messages for each required section
-  const condominiumsErrors = errors?.condominiumsInfo as Record<string, { message?: string }> | undefined;
+  const condominiumsErrors = errors?.condominiumsInfo as
+    | Record<string, { message?: string }>
+    | undefined;
   const propertyAddressError = condominiumsErrors?.propertyAddress?.message as string | undefined;
   const leasingInfoError = condominiumsErrors?.leasingInfo?.message as string | undefined;
   const chargesError = condominiumsErrors?.charges?.message as string | undefined;
@@ -104,7 +110,9 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("propertyAddress")}
             />
           ) : (
-            <div className={`border ${propertyAddressError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
+            <div
+              className={`border ${propertyAddressError ? "border-red-500" : "border-gray-200"} rounded-2xl p-4 mb-4`}
+            >
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Property address <span className="text-red-500">(Required)</span>
@@ -140,7 +148,9 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("leasingInfo")}
             />
           ) : (
-            <div className={`border ${leasingInfoError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
+            <div
+              className={`border ${leasingInfoError ? "border-red-500" : "border-gray-200"} rounded-2xl p-4 mb-4`}
+            >
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Leasing info <span className="text-red-500">(Required)</span>
@@ -155,9 +165,7 @@ export function CondominiumsInfoForm() {
                   <Plus className="h-4 w-4 mr-1" /> Add
                 </Button>
               </div>
-              {leasingInfoError && (
-                <p className="text-sm text-red-500 mt-2">{leasingInfoError}</p>
-              )}
+              {leasingInfoError && <p className="text-sm text-red-500 mt-2">{leasingInfoError}</p>}
             </div>
           )}
 
@@ -175,7 +183,9 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("charges")}
             />
           ) : (
-            <div className={`border ${chargesError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
+            <div
+              className={`border ${chargesError ? "border-red-500" : "border-gray-200"} rounded-2xl p-4 mb-4`}
+            >
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Charges <span className="text-red-500">(Required)</span>
@@ -190,9 +200,7 @@ export function CondominiumsInfoForm() {
                   <Plus className="h-4 w-4 mr-1" /> Add
                 </Button>
               </div>
-              {chargesError && (
-                <p className="text-sm text-red-500 mt-2">{chargesError}</p>
-              )}
+              {chargesError && <p className="text-sm text-red-500 mt-2">{chargesError}</p>}
             </div>
           )}
 
@@ -213,7 +221,9 @@ export function CondominiumsInfoForm() {
               onEdit={() => openModal("rentFrequency")}
             />
           ) : (
-            <div className={`border ${rentFrequencyError ? 'border-red-500' : 'border-gray-200'} rounded-lg p-4 mb-4`}>
+            <div
+              className={`border ${rentFrequencyError ? "border-red-500" : "border-gray-200"} rounded-2xl p-4 mb-4`}
+            >
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Rent frequency & payment reminder <span className="text-red-500">(Required)</span>
@@ -235,7 +245,7 @@ export function CondominiumsInfoForm() {
           )}
 
           {/* Application Agreement */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Application agreement <span className="text-gray-500">(Optional)</span>
@@ -253,7 +263,7 @@ export function CondominiumsInfoForm() {
           </div>
 
           {/* About Property */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 About the property <span className="text-gray-500">(Optional)</span>
@@ -271,7 +281,7 @@ export function CondominiumsInfoForm() {
           </div>
 
           {/* Community Amenities */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Community&apos;s amenity/features{" "}
@@ -308,7 +318,7 @@ export function CondominiumsInfoForm() {
               onDelete={() => deleteData("petFees")}
             />
           ) : (
-            <div className="border border-gray-200 rounded-lg p-4 mb-4">
+            <div className="border border-gray-200 rounded-2xl p-4 mb-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-medium">
                   Pet fees{" "}
@@ -328,61 +338,91 @@ export function CondominiumsInfoForm() {
           )}
 
           {/* Parking */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Parking <span className="text-gray-500">(Optional)</span>
               </h3>
-              <Button type="button" variant="outline" size="sm" className="text-blue-500" onClick={() => {}}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-blue-500"
+                onClick={() => {}}
+              >
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
             </div>
           </div>
 
           {/* Educational Institution */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Nearest educational institution{" "}
                 <span className="text-gray-500">(Optional but recommended)</span>
               </h3>
-              <Button type="button" variant="outline" size="sm" className="text-blue-500" onClick={() => {}}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-blue-500"
+                onClick={() => {}}
+              >
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
             </div>
           </div>
 
           {/* Stations */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Nearest stations <span className="text-gray-500">(Optional but recommended)</span>
               </h3>
-              <Button type="button" variant="outline" size="sm" className="text-blue-500" onClick={() => {}}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-blue-500"
+                onClick={() => {}}
+              >
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
             </div>
           </div>
 
           {/* Landmarks */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Nearest landmark <span className="text-gray-500">(Optional but recommended)</span>
               </h3>
-              <Button type="button" variant="outline" size="sm" className="text-blue-500" onClick={() => {}}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-blue-500"
+                onClick={() => {}}
+              >
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
             </div>
           </div>
 
           {/* Utilities Provider */}
-          <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <div className="border border-gray-200 rounded-2xl p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
                 Utilities provider <span className="text-gray-500">(Optional but recommended)</span>
               </h3>
-              <Button type="button" variant="outline" size="sm" className="text-blue-500" onClick={() => {}}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-blue-500"
+                onClick={() => {}}
+              >
                 <Plus className="h-4 w-4 mr-1" /> Add
               </Button>
             </div>
@@ -392,61 +432,42 @@ export function CondominiumsInfoForm() {
 
       {/* Property Gallery */}
       <div className="mt-6">
-        <div className="border border-gray-200 rounded-lg p-4 mb-4">
-          <h3 className="text-sm font-medium mb-4">
-            Property gallery <span className="text-gray-500">(Its not unit photos)*</span>
+        <div className="border border-gray-200 rounded-2xl mb-4">
+          <h3 className="text-sm font-medium border-b border-gray-200 p-4 bg-[#F4F4F4] rounded-t-2xl">
+            Property gallery <span className="text-gray-500">(Its not unit photo)*</span>
           </h3>
 
-          <div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="border border-dashed border-gray-300 rounded p-4 flex flex-col items-center justify-center">
-                <div className="mb-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                  </svg>
+          <div className="p-4">
+            <div className="mb-4">
+              <p className="text-sm font-medium mb-3">Featured photos<span className="text-red-500">*</span></p>
+              <div className="flex flex-wrap gap-3">
+                {/* Main featured photo upload box */}
+                <div className="border border-dashed border-blue-300 rounded-md bg-blue-50/50 p-4 flex flex-col items-center justify-center w-[180px] h-[180px]">
+                  <div className="mb-2">
+                    <Upload className="h-6 w-6 text-blue-500" />
+                  </div>
+                  <p className="text-xs font-medium text-center">Upload cover photo</p>
+                  <p className="text-[10px] text-gray-500 text-center">(jpg, png only)</p>
                 </div>
-                <p className="text-xs text-center">Upload cover photo</p>
-                <p className="text-xs text-gray-500">(one pic only)</p>
+
+                {/* Additional featured photos */}
+                {Array(3).fill(0).map((_, index) => (
+                  <div key={`featured-${index}`} className="border border-dashed border-blue-300 rounded-md bg-blue-50/50 p-2 flex flex-col items-center justify-center w-[100px] h-[100px]">
+                    <Upload className="h-5 w-5 text-blue-500" />
+                  </div>
+                ))}
               </div>
-              {/* More photo upload slots would go here */}
             </div>
 
-            <h3 className="text-sm font-medium mb-2">More photos (optional)</h3>
-            <div className="grid grid-cols-6 gap-2">
-              {Array.from({ length: 12 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="border border-dashed border-gray-300 rounded p-2 flex items-center justify-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                  </svg>
-                </div>
-              ))}
+            <div>
+              <p className="text-sm font-medium mb-3">More photos<span className="text-gray-500">(optional)</span></p>
+              <div className="flex flex-wrap gap-3">
+                {Array(8).fill(0).map((_, index) => (
+                  <div key={`more-${index}`} className="border border-dashed border-gray-300 rounded-md bg-gray-50/50 p-2 flex flex-col items-center justify-center w-[100px] h-[100px]">
+                    <Upload className="h-5 w-5 text-gray-400" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -454,7 +475,7 @@ export function CondominiumsInfoForm() {
 
       {/* Videos */}
       <div className="mt-6">
-        <div className="border border-gray-200 rounded-lg p-4 mb-4">
+        <div className="border border-gray-200 rounded-2xl p-4 mb-4">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-medium">
               Videos <span className="text-gray-500">(optional)</span>
