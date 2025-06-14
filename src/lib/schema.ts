@@ -19,6 +19,15 @@ export enum Role {
 }
 
 /**
+ * Form step enum
+ */
+export enum FormStep {
+  ROLE_SELECTION = "role_selection",
+  CONDOMINIUMS_INFO = "condominiums_info",
+  FINAL = "final",
+}
+
+/**
  * Base form schema with property type and role validation
  */
 export const baseFormSchema = z.object({
@@ -120,6 +129,129 @@ export const termsSchema = z.object({
 });
 
 /**
+ * Property address schema
+ */
+export const propertyAddressSchema = z.object({
+  propertyName: z.string().min(1, "Property name is required"),
+  totalUnits: z.string().min(1, "Total units is required"),
+  propertyWebsite: z.string().optional(),
+  country: z.string().min(1, "Country is required"),
+  streetAddress: z.string().min(1, "Street address is required"),
+  aptSuiteUnit: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  zipCode: z.string().min(1, "Zip code is required"),
+});
+
+/**
+ * Leasing info schema
+ */
+export const leasingInfoSchema = z.object({
+  leasingManager: z.string().min(1, "Leasing manager name is required"),
+  email: z.string().email("Invalid email address"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+});
+
+/**
+ * Charges schema
+ */
+export const chargesSchema = z.object({
+  applicationFee: z.string().min(1, "Application fee is required"),
+  adminFee: z.string().min(1, "Admin fee is required"),
+});
+
+/**
+ * Rent frequency schema
+ */
+export const rentFrequencySchema = z.object({
+  rentFrequency: z.string().min(1, "Rent frequency is required"),
+  reminderDate: z.string().min(1, "Reminder date is required"),
+  dueDate: z.string().min(1, "Due date is required"),
+});
+
+/**
+ * Pet fees schema
+ */
+export const petFeesSchema = z.object({
+  dogMaxWeight: z.string().optional(),
+  monthlyRent: z.string().optional(),
+  oneTimeFee: z.string().optional(),
+  securityDeposit: z.string().optional(),
+});
+
+/**
+ * Parking schema
+ */
+export const parkingSchema = z.object({
+  guestParkingTime: z.string().optional(),
+  parkingDescription: z.string().optional(),
+});
+
+/**
+ * Educational institution schema
+ */
+export const educationalInstitutionSchema = z.object({
+  elementary: z.string().optional(),
+  highSchool: z.string().optional(),
+  elementaryTwo: z.string().optional(),
+});
+
+/**
+ * Stations schema
+ */
+export const stationsSchema = z.object({
+  busStation: z.string().optional(),
+  railStation: z.string().optional(),
+  airport: z.string().optional(),
+});
+
+/**
+ * Landmarks schema
+ */
+export const landmarksSchema = z.object({
+  museum: z.string().optional(),
+  mosque: z.string().optional(),
+  temple: z.string().optional(),
+});
+
+/**
+ * Utilities provider schema
+ */
+export const utilitiesProviderSchema = z.object({
+  internet: z.string().optional(),
+  cable: z.string().optional(),
+  water: z.string().optional(),
+});
+
+/**
+ * Community amenities schema
+ */
+export const communityAmenitiesSchema = z.object({
+  amenities: z.array(z.string()).optional(),
+});
+
+/**
+ * Condominium information schema
+ */
+export const condominiumsInfoSchema = z.object({
+  propertyAddress: propertyAddressSchema.optional(),
+  leasingInfo: leasingInfoSchema.optional(),
+  charges: chargesSchema.optional(),
+  rentFrequency: rentFrequencySchema.optional(),
+  applicationAgreement: z.string().optional(),
+  aboutProperty: z.string().optional(),
+  petFees: petFeesSchema.optional(),
+  parking: parkingSchema.optional(),
+  nearestEducationalInstitution: educationalInstitutionSchema.optional(),
+  nearestStations: stationsSchema.optional(),
+  nearestLandmarks: landmarksSchema.optional(),
+  utilitiesProvider: utilitiesProviderSchema.optional(),
+  communityAmenities: communityAmenitiesSchema.optional(),
+  propertyGallery: z.array(z.string()).optional(),
+  videos: z.array(z.string()).optional(),
+});
+
+/**
  * Dynamic form schema based on role selection
  * Includes validation for common fields across all roles
  */
@@ -128,18 +260,24 @@ export const formSchema = z.discriminatedUnion("role", [
     role: z.literal(Role.LANDLORD),
     propertyType: z.nativeEnum(PropertyType),
     termsAccepted: z.boolean().default(false),
+    currentStep: z.nativeEnum(FormStep).default(FormStep.ROLE_SELECTION),
+    condominiumsInfo: condominiumsInfoSchema.optional(),
     ...landlordSchema.shape,
   }),
   z.object({
     role: z.literal(Role.REALTOR),
     propertyType: z.nativeEnum(PropertyType),
     termsAccepted: z.boolean().default(false),
+    currentStep: z.nativeEnum(FormStep).default(FormStep.ROLE_SELECTION),
+    condominiumsInfo: condominiumsInfoSchema.optional(),
     ...realtorSchema.shape,
   }),
   z.object({
     role: z.literal(Role.MANAGEMENT_COMPANY),
     propertyType: z.nativeEnum(PropertyType),
     termsAccepted: z.boolean().default(false),
+    currentStep: z.nativeEnum(FormStep).default(FormStep.ROLE_SELECTION),
+    condominiumsInfo: condominiumsInfoSchema.optional(),
     ...managementCompanySchema.shape,
   }),
 ]);
