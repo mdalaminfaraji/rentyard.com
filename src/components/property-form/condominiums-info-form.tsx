@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { petFeesSchema } from "@/lib/schema";
+import { z } from "zod";
 import { useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Plus, Trash2, Upload } from "lucide-react";
@@ -45,6 +47,8 @@ export function CondominiumsInfoForm() {
   const chargesError = condominiumsErrors?.charges?.message as string | undefined;
   const rentFrequencyError = condominiumsErrors?.rentFrequency?.message as string | undefined;
 
+  const [currentEditingPetFeeIndex, setCurrentEditingPetFeeIndex] = useState<number | undefined>();
+
   const [modalOpen, setModalOpen] = useState<ModalState>({
     propertyAddress: false,
     leasingInfo: false,
@@ -62,15 +66,41 @@ export function CondominiumsInfoForm() {
   });
 
   const openModal = (modal: keyof ModalState) => {
+    if (modal === 'petFees' && currentEditingPetFeeIndex === undefined) {
+      // When adding a new pet fee, clear the current editing index
+      setCurrentEditingPetFeeIndex(undefined);
+    }
     setModalOpen((prev) => ({ ...prev, [modal]: true }));
   };
 
   const closeModal = (modal: keyof ModalState) => {
     setModalOpen((prev) => ({ ...prev, [modal]: false }));
+    if (modal === 'petFees') {
+      setCurrentEditingPetFeeIndex(undefined);
+    }
   };
 
   const saveData = (key: string, data: Record<string, unknown>) => {
     setValue(`condominiumsInfo.${key}`, data, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const savePetFee = (data: Record<string, unknown>, index?: number) => {
+    const currentPetFees = condominiumsInfo.petFees || [];
+    let updatedPetFees;
+    
+    if (index !== undefined) {
+      // Edit existing pet fee
+      updatedPetFees = [...currentPetFees];
+      updatedPetFees[index] = data;
+    } else {
+      // Add new pet fee
+      updatedPetFees = [...currentPetFees, data];
+    }
+    
+    setValue('condominiumsInfo.petFees', updatedPetFees, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -81,6 +111,24 @@ export function CondominiumsInfoForm() {
       shouldValidate: true,
       shouldDirty: true,
     });
+  };
+
+  const deletePetFee = (index: number) => {
+    const currentPetFees = [...(condominiumsInfo.petFees || [])];
+    currentPetFees.splice(index, 1);
+    
+    // If the array is empty after deletion, set petFees to undefined
+    if (currentPetFees.length === 0) {
+      setValue('condominiumsInfo.petFees', undefined, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    } else {
+      setValue('condominiumsInfo.petFees', currentPetFees, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
   };
 
   return (
@@ -310,7 +358,7 @@ export function CondominiumsInfoForm() {
         {/* Right Column */}
         <div>
           {/* Pet Fees */}
-          {condominiumsInfo.petFees ? (
+          {condominiumsInfo.petFees && condominiumsInfo.petFees.length > 0 ? (
             <DataDisplayCard
               addWithTitle={
                 <>
@@ -332,35 +380,41 @@ export function CondominiumsInfoForm() {
                 </>
               }
               data={
-                <div className="flex justify-between items-center">
-                  <div className="max-w-[70%]">
-                    Pet type: {condominiumsInfo.petFees.petType}, Max weight:{" "}
-                    {condominiumsInfo.petFees.maxWeight}, Monthly per rent:{" "}
-                    {condominiumsInfo.petFees.monthlyRent}, One time pet fee:{" "}
-                    {condominiumsInfo.petFees.oneTimeFee}, Pet security deposit:{" "}
-                    {condominiumsInfo.petFees.securityDeposit}
-                  </div>
-
-                  <div className="flex justify-end space-x-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="text-blue-500"
-                      onClick={() => openModal("petFees")}
-                    >
-                      <HugeiconsIcon icon={PencilEdit02Icon} size={28} />
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="text-red-500"
-                      onClick={() => deleteData("petFees")}
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                    </Button>
-                  </div>
+                <div className="space-y-4">
+                  {condominiumsInfo.petFees.map((petFee: z.infer<typeof petFeesSchema>, index: number) => (
+                    <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                      <div className="max-w-[70%]">
+                        Pet type: {petFee.petType}, Max weight: {petFee.maxWeight}, 
+                        Monthly per rent: {petFee.monthlyRent}
+                        <br />
+                        One time pet fee: {petFee.oneTimeFee}, Pet security deposit: {petFee.securityDeposit}
+                      </div>
+                      
+                      <div className="flex justify-end space-x-2">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-blue-500"
+                          onClick={() => {
+                            setCurrentEditingPetFeeIndex(index);
+                            openModal("petFees");
+                          }}
+                        >
+                          <HugeiconsIcon icon={PencilEdit02Icon} size={28} />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-500"
+                          onClick={() => deletePetFee(index)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               }
             />
@@ -581,8 +635,11 @@ export function CondominiumsInfoForm() {
       <PetFeesModal
         isOpen={modalOpen.petFees}
         onClose={() => closeModal("petFees")}
-        onSave={(data) => saveData("petFees", data)}
-        initialData={condominiumsInfo.petFees}
+        onSave={(data) => savePetFee(data, currentEditingPetFeeIndex)}
+        initialData={currentEditingPetFeeIndex !== undefined && condominiumsInfo.petFees 
+          ? condominiumsInfo.petFees[currentEditingPetFeeIndex] 
+          : undefined}
+        isEditing={currentEditingPetFeeIndex !== undefined}
       />
     </div>
   );

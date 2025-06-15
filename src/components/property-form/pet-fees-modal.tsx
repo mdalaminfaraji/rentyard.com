@@ -14,9 +14,10 @@ interface PetFeesModalProps {
   onClose: () => void;
   onSave: (data: any) => void;
   initialData?: any;
+  isEditing?: boolean;
 }
 
-export function PetFeesModal({ isOpen, onClose, onSave, initialData }: PetFeesModalProps) {
+export function PetFeesModal({ isOpen, onClose, onSave, initialData, isEditing = false }: PetFeesModalProps) {
   const {
     control,
     handleSubmit,
@@ -56,11 +57,11 @@ export function PetFeesModal({ isOpen, onClose, onSave, initialData }: PetFeesMo
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Pet fees"
+      title={isEditing ? "Edit Pet Fee" : "Add Pet Fee"}
       footer={
         <div className="flex justify-end space-x-2">
           <Button variant="primary" onClick={handleSubmit(onSubmit)} type="button">
-            Add
+            {isEditing ? "Save" : "Add"}
           </Button>
         </div>
       }

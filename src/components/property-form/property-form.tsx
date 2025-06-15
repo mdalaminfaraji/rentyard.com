@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
 import { useForm, FormProvider, FieldErrors } from "react-hook-form";
@@ -17,7 +18,6 @@ export function PropertyForm() {
   const methods = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // Set empty defaults - these will be caught by validation
       propertyType: undefined,
       role: undefined,
       termsAccepted: false,
@@ -81,7 +81,7 @@ export function PropertyForm() {
   };
 
   // Form submission handler
-  const onSubmit = async (data: ReturnType<(typeof formSchema)["parse"]>) => {
+  const onSubmit = async (data: any) => {
     try {
       // Form data is available here for API submission
 
@@ -93,44 +93,44 @@ export function PropertyForm() {
         });
         return;
       }
-      
+
       // If on CONDOMINIUMS_INFO step, validate required fields before proceeding
       if (currentStep === FormStep.CONDOMINIUMS_INFO) {
         const condominiumsInfo = data.condominiumsInfo || {};
         let hasErrors = false;
-        
+
         if (!condominiumsInfo.propertyAddress) {
-          methods.setError("condominiumsInfo.propertyAddress", { 
-            type: "manual", 
-            message: "Property address is required" 
+          methods.setError("condominiumsInfo.propertyAddress", {
+            type: "manual",
+            message: "Property address is required",
           });
           hasErrors = true;
         }
-        
+
         if (!condominiumsInfo.leasingInfo) {
-          methods.setError("condominiumsInfo.leasingInfo", { 
-            type: "manual", 
-            message: "Leasing info is required" 
+          methods.setError("condominiumsInfo.leasingInfo", {
+            type: "manual",
+            message: "Leasing info is required",
           });
           hasErrors = true;
         }
-        
+
         if (!condominiumsInfo.charges) {
-          methods.setError("condominiumsInfo.charges", { 
-            type: "manual", 
-            message: "Charges are required" 
+          methods.setError("condominiumsInfo.charges", {
+            type: "manual",
+            message: "Charges are required",
           });
           hasErrors = true;
         }
-        
+
         if (!condominiumsInfo.rentFrequency) {
-          methods.setError("condominiumsInfo.rentFrequency", { 
-            type: "manual", 
-            message: "Rent frequency is required" 
+          methods.setError("condominiumsInfo.rentFrequency", {
+            type: "manual",
+            message: "Rent frequency is required",
           });
           hasErrors = true;
         }
-        
+
         if (hasErrors) {
           // Don't proceed if there are validation errors - errors are already set on form
           return;

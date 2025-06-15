@@ -317,7 +317,7 @@ export const condominiumsInfoSchema = z.object({
   rentFrequency: rentFrequencySchema.optional(),
   applicationAgreement: z.string().optional(),
   aboutProperty: z.string().optional(),
-  petFees: petFeesSchema.optional(),
+  petFees: z.array(petFeesSchema).optional(),
   parking: parkingSchema.optional(),
   nearestEducationalInstitution: educationalInstitutionSchema.optional(),
   nearestStations: stationsSchema.optional(),
