@@ -12,9 +12,11 @@ import { CondominiumsInfoForm } from "./condominiums-info-form";
 import { Button } from "../ui/button";
 import { Role, FormStep, PropertyType, formSchema } from "@/lib/schema";
 import Image from "next/image";
+import { useAddCondominiumMutation } from "@/redux/services/condominiumApi";
 
 export function PropertyForm() {
   // Initialize form with react-hook-form and zod validation
+  const [addCondominium] = useAddCondominiumMutation();
   const methods = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -82,6 +84,7 @@ export function PropertyForm() {
 
   // Form submission handler
   const onSubmit = async (data: any) => {
+    console.log("submit data", data);
     try {
       // Form data is available here for API submission
 
@@ -144,7 +147,114 @@ export function PropertyForm() {
       }
 
       // Here you would typically handle the form submission, like sending data to API
-
+      const body = {
+        roleId: "68493d617ee748c15e5e8db4",
+        address: {
+          name: "Greenwood Estates",
+          unitCount: 100,
+          website: "https://greenwoodestates.example.com",
+          country: "USA",
+          countryCode: "US",
+          street: "123 Main St",
+          apt: "Suite 400",
+          city: "Springfield",
+          state: "IL",
+          zipCode: "62704",
+        },
+        leasingInfo: {
+          managerName: "John Doe",
+          managerPhoneNumber: "+1-555-123-4567",
+          managerEmail: "manager@greenwood.com",
+          managerAddress: {
+            isSameAsCondominium: false,
+            street: "456 Leasing Ave",
+            apt: "Apt 2B",
+            city: "Springfield",
+            state: "IL",
+            zipCode: "62705",
+          },
+        },
+        charges: {
+          applicationFee: 50,
+          feeApplicable: "Per Adult",
+          adminFee: 100,
+        },
+        rentFrequency: {
+          paymentFrequency: "Monthly",
+          reminderDate: "25",
+          dueDate: "05",
+        },
+        agreement: {
+          agreementFile: "https://example.com/agreements/greenwood.pdf",
+          allowImmigrant: true,
+        },
+        about: "A peaceful and modern residential community with all essential amenities.",
+        amenities: ["Pool", "Gym", "Clubhouse", "WiFi", "Security"],
+        petFees: [
+          {
+            petType: "Dog",
+            maxWeight: 40,
+            oneTimeFee: 200,
+            securityDeposit: 150,
+            petRent: 25,
+          },
+        ],
+        parking: {
+          parkingTime: "1 hr",
+          overview: "Secured underground parking available with each unit.",
+        },
+        educationalInstitution: [
+          {
+            type: "High School",
+            distance: 1.5,
+            distanceUnit: "miles",
+            name: "Springfield High School",
+          },
+        ],
+        station: [
+          {
+            type: "Bus",
+            distance: 0.3,
+            distanceUnit: "miles",
+            name: "Main Street Bus Stop",
+          },
+        ],
+        landmark: [
+          {
+            type: "Park",
+            distance: 0.8,
+            distanceUnit: "miles",
+            name: "Lincoln Park",
+          },
+        ],
+        utilities: [
+          {
+            type: "Electricity",
+            name: "Springfield Electric Co.",
+          },
+        ],
+        gallery: {
+          featuredPhotos: [
+            "https://cdn.example.com/images/featured1.jpg",
+            "https://cdn.example.com/images/featured2.jpg",
+          ],
+          morePhotos: [
+            "https://cdn.example.com/images/photo1.jpg",
+            "https://cdn.example.com/images/photo2.jpg",
+          ],
+        },
+        videos: {
+          propertyVideos: "https://cdn.example.com/videos/property.mp4",
+          tourVideos: "https://cdn.example.com/videos/tour.mp4",
+          arialVideos: "https://cdn.example.com/videos/arial.mp4",
+        },
+        //   "isPaid": true,
+        //   "reviewStatus": "Pending",
+        //   "status": "In-Review",
+        //   "suspensionReason": ""
+      };
+      const response = await addCondominium(body);
+      console.log(response);
       // Show success message or redirect to next page
       alert("Form submitted successfully!");
     } catch (error) {
