@@ -66,7 +66,7 @@ export function CondominiumsInfoForm() {
   });
 
   const openModal = (modal: keyof ModalState) => {
-    if (modal === 'petFees' && currentEditingPetFeeIndex === undefined) {
+    if (modal === "petFees" && currentEditingPetFeeIndex === undefined) {
       // When adding a new pet fee, clear the current editing index
       setCurrentEditingPetFeeIndex(undefined);
     }
@@ -75,7 +75,7 @@ export function CondominiumsInfoForm() {
 
   const closeModal = (modal: keyof ModalState) => {
     setModalOpen((prev) => ({ ...prev, [modal]: false }));
-    if (modal === 'petFees') {
+    if (modal === "petFees") {
       setCurrentEditingPetFeeIndex(undefined);
     }
   };
@@ -90,7 +90,7 @@ export function CondominiumsInfoForm() {
   const savePetFee = (data: Record<string, unknown>, index?: number) => {
     const currentPetFees = condominiumsInfo.petFees || [];
     let updatedPetFees;
-    
+
     if (index !== undefined) {
       // Edit existing pet fee
       updatedPetFees = [...currentPetFees];
@@ -99,8 +99,8 @@ export function CondominiumsInfoForm() {
       // Add new pet fee
       updatedPetFees = [...currentPetFees, data];
     }
-    
-    setValue('condominiumsInfo.petFees', updatedPetFees, {
+
+    setValue("condominiumsInfo.petFees", updatedPetFees, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -116,15 +116,15 @@ export function CondominiumsInfoForm() {
   const deletePetFee = (index: number) => {
     const currentPetFees = [...(condominiumsInfo.petFees || [])];
     currentPetFees.splice(index, 1);
-    
+
     // If the array is empty after deletion, set petFees to undefined
     if (currentPetFees.length === 0) {
-      setValue('condominiumsInfo.petFees', undefined, {
+      setValue("condominiumsInfo.petFees", undefined, {
         shouldValidate: true,
         shouldDirty: true,
       });
     } else {
-      setValue('condominiumsInfo.petFees', currentPetFees, {
+      setValue("condominiumsInfo.petFees", currentPetFees, {
         shouldValidate: true,
         shouldDirty: true,
       });
@@ -145,11 +145,13 @@ export function CondominiumsInfoForm() {
               required
               data={
                 <div>
-                  {condominiumsInfo.propertyAddress.propertyName}, Total unit:{" "}
+                  Property name: {condominiumsInfo.propertyAddress.propertyName}, Total unit:{" "}
                   {condominiumsInfo.propertyAddress.totalUnits}
-                  {condominiumsInfo.propertyAddress.streetAddress},{" "}
-                  {condominiumsInfo.propertyAddress.city}, {condominiumsInfo.propertyAddress.state}{" "}
-                  {condominiumsInfo.propertyAddress.zipCode}, USA
+                  Street address: {condominiumsInfo.propertyAddress.streetAddress}, City:{" "}
+                  {condominiumsInfo.propertyAddress.city}, State:{" "}
+                  {condominiumsInfo.propertyAddress.state} Zip code:{" "}
+                  {condominiumsInfo.propertyAddress.zipCode}, Country:{" "}
+                  {condominiumsInfo.propertyAddress.country}
                 </div>
               }
               onEdit={() => openModal("propertyAddress")}
@@ -381,40 +383,46 @@ export function CondominiumsInfoForm() {
               }
               data={
                 <div className="space-y-4">
-                  {condominiumsInfo.petFees.map((petFee: z.infer<typeof petFeesSchema>, index: number) => (
-                    <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                      <div className="max-w-[70%]">
-                        Pet type: {petFee.petType}, Max weight: {petFee.maxWeight}, 
-                        Monthly per rent: {petFee.monthlyRent}
-                        <br />
-                        One time pet fee: {petFee.oneTimeFee}, Pet security deposit: {petFee.securityDeposit}
+                  {condominiumsInfo.petFees.map(
+                    (petFee: z.infer<typeof petFeesSchema>, index: number) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0"
+                      >
+                        <div className="max-w-[70%]">
+                          Pet type: {petFee.petType}, Max weight: {petFee.maxWeight}, Monthly per
+                          rent: {petFee.monthlyRent}
+                          <br />
+                          One time pet fee: {petFee.oneTimeFee}, Pet security deposit:{" "}
+                          {petFee.securityDeposit}
+                        </div>
+
+                        <div className="flex justify-end space-x-2">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="text-blue-500"
+                            onClick={() => {
+                              setCurrentEditingPetFeeIndex(index);
+                              openModal("petFees");
+                            }}
+                          >
+                            <HugeiconsIcon icon={PencilEdit02Icon} size={28} />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-500"
+                            onClick={() => deletePetFee(index)}
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                          </Button>
+                        </div>
                       </div>
-                      
-                      <div className="flex justify-end space-x-2">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-blue-500"
-                          onClick={() => {
-                            setCurrentEditingPetFeeIndex(index);
-                            openModal("petFees");
-                          }}
-                        >
-                          <HugeiconsIcon icon={PencilEdit02Icon} size={28} />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-500"
-                          onClick={() => deletePetFee(index)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               }
             />
@@ -636,9 +644,11 @@ export function CondominiumsInfoForm() {
         isOpen={modalOpen.petFees}
         onClose={() => closeModal("petFees")}
         onSave={(data) => savePetFee(data, currentEditingPetFeeIndex)}
-        initialData={currentEditingPetFeeIndex !== undefined && condominiumsInfo.petFees 
-          ? condominiumsInfo.petFees[currentEditingPetFeeIndex] 
-          : undefined}
+        initialData={
+          currentEditingPetFeeIndex !== undefined && condominiumsInfo.petFees
+            ? condominiumsInfo.petFees[currentEditingPetFeeIndex]
+            : undefined
+        }
         isEditing={currentEditingPetFeeIndex !== undefined}
       />
     </div>

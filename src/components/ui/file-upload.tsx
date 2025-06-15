@@ -55,7 +55,7 @@ export function FileUpload({
         onClick={handleClick}
       >
         <HugeiconsIcon icon={Upload02Icon} size={20} color="gray" className="mr-2" />
-        <span className="text-sm text-[#6F6C6A]">{fileName || "(pdf only)" || label}</span>
+        <span className="text-sm text-[#6F6C6A]">{fileName || "(pdf only)"}</span>
         <input
           ref={inputRef}
           type="file"

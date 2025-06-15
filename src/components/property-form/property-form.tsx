@@ -141,7 +141,7 @@ export function PropertyForm() {
       }
 
       // If not on the final step, just move to next step
-      if (currentStep !== FormStep.FINAL) {
+      if (currentStep !== FormStep.CONDOMINIUMS_INFO) {
         goToNextStep();
         return;
       }
@@ -253,6 +253,7 @@ export function PropertyForm() {
         //   "status": "In-Review",
         //   "suspensionReason": ""
       };
+
       const response = await addCondominium(body);
       console.log(response);
       // Show success message or redirect to next page
