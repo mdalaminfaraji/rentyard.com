@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { Role, FormStep, PropertyType, formSchema } from "@/lib/schema";
 import Image from "next/image";
 import { useAddCondominiumMutation } from "@/redux/services/condominiumApi";
+import { toast } from "react-toastify";
 
 export function PropertyForm() {
   // Initialize form with react-hook-form and zod validation
@@ -33,6 +34,7 @@ export function PropertyForm() {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { isSubmitting },
   } = methods;
 
@@ -150,21 +152,21 @@ export function PropertyForm() {
       const body = {
         roleId: "68493d617ee748c15e5e8db4",
         address: {
-          name: "Greenwood Estates",
-          unitCount: 100,
-          website: "https://greenwoodestates.example.com",
-          country: "USA",
-          countryCode: "US",
-          street: "123 Main St",
-          apt: "Suite 400",
-          city: "Springfield",
-          state: "IL",
-          zipCode: "62704",
+          name: data?.condominiumsInfo?.propertyAddress?.propertyName,
+          unitCount: data?.condominiumsInfo?.propertyAddress?.totalUnits,
+          website: data?.condominiumsInfo?.propertyAddress?.propertyWebsite,
+          country: data?.condominiumsInfo?.propertyAddress?.country,
+          countryCode: data?.condominiumsInfo?.propertyAddress?.countryCode,
+          street: data?.condominiumsInfo?.propertyAddress?.streetAddress,
+          apt: data?.condominiumsInfo?.propertyAddress?.aptSuiteUnit,
+          city: data?.condominiumsInfo?.propertyAddress?.city,
+          state: data?.condominiumsInfo?.propertyAddress?.state,
+          zipCode: data?.condominiumsInfo?.propertyAddress?.zipCode,
         },
         leasingInfo: {
-          managerName: "John Doe",
-          managerPhoneNumber: "+1-555-123-4567",
-          managerEmail: "manager@greenwood.com",
+          managerName: data?.condominiumsInfo?.leasingInfo?.leasingManager,
+          managerPhoneNumber: data?.condominiumsInfo?.leasingInfo?.phoneNumber,
+          managerEmail: data?.condominiumsInfo?.leasingInfo?.email,
           managerAddress: {
             isSameAsCondominium: false,
             street: "456 Leasing Ave",
@@ -175,17 +177,17 @@ export function PropertyForm() {
           },
         },
         charges: {
-          applicationFee: 50,
+          applicationFee: data?.condominiumsInfo?.charges?.applicationFee,
           feeApplicable: "Per Adult",
-          adminFee: 100,
+          adminFee: data?.condominiumsInfo?.charges?.adminFee,
         },
         rentFrequency: {
-          paymentFrequency: "Monthly",
-          reminderDate: "25",
-          dueDate: "05",
+          paymentFrequency: data?.condominiumsInfo?.rentFrequency?.rentFrequency,
+          reminderDate: data?.condominiumsInfo?.rentFrequency?.reminderDate,
+          dueDate: data?.condominiumsInfo?.rentFrequency?.dueDate,
         },
         agreement: {
-          agreementFile: "https://example.com/agreements/greenwood.pdf",
+          agreementFile: data?.ownershipDoc,
           allowImmigrant: true,
         },
         about: "A peaceful and modern residential community with all essential amenities.",
@@ -257,7 +259,9 @@ export function PropertyForm() {
       const response = await addCondominium(body);
       console.log(response);
       // Show success message or redirect to next page
-      alert("Form submitted successfully!");
+      toast.success("Form submitted successfully!");
+      goToPreviousStep();
+      reset();
     } catch (error) {
       console.error("Form submission error:", error);
     }

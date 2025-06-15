@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FileUpload } from "../ui/file-upload";
 import { useUploadImageMutation } from "@/redux/services/uploadApi";
+import { toast } from "react-toastify";
 
 export function LandlordForm() {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-  
+
   const [uploadImage] = useUploadImageMutation();
   const [isUploading, setIsUploading] = useState(false);
 
@@ -30,17 +31,19 @@ export function LandlordForm() {
                   try {
                     setIsUploading(true);
                     const formData = new FormData();
-                    formData.append('images', file);
-                    
+                    formData.append("images", file);
+
                     const response = await uploadImage(formData).unwrap();
-                    console.log('Upload response:', response);
-                    
+                    console.log("Upload response:", response);
+
                     if (response.success && response.data?.images?.[0]?.url) {
                       // Set the URL from the response to the field value
                       field.onChange(response.data.images[0].url);
+                      toast.success("File uploaded successfully!");
                     }
                   } catch (error) {
-                    console.error('Error uploading file:', error);
+                    console.error("Error uploading file:", error);
+                    toast.error("Error uploading file!");
                   } finally {
                     setIsUploading(false);
                   }
